@@ -4,6 +4,8 @@ import { socials } from "../constants";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "gsap";
 import { useState } from "react";
+import { useEffect } from "react";
+import { Link } from "react-scroll";
 const Navbar = () => {
   const navRef = useRef(null);
   const linksRef = useRef([]);
@@ -11,7 +13,9 @@ const Navbar = () => {
   const topLineRef = useRef(null);
   const bottomLineRef = useRef(null);
   const tl = useRef(null);
+  const iconTL = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [showBurger, setShowBurger] = useState(true);
   useGSAP(() => {
     gsap.set(navRef.current, { xPercent: 100 });
     gsap.set([linksRef.current, contactRef.current], {
@@ -47,13 +51,46 @@ const Navbar = () => {
         },
         "<+0.2",
       );
-  });
+    iconTL.current = gsap
+      .timeline({ paused: true })
+      .to(topLineRef.current, {
+        rotate: 45,
+        y: 3.3,
+        duration: 0.3,
+        ease: "power2.inOut",
+      })
+      .to(
+        bottomLineRef.current,
+        {
+          rotate: -45,
+          y: -3.3,
+          duration: 0.3,
+          ease: "power2.inOut",
+        },
+        "<",
+      );
+  }, []);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setShowBurger(currentScrollY <= lastScrollY || currentScrollY < 10);
+      lastScrollY = currentScrollY;
+    };
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMenu = () => {
     if (isOpen) {
       tl.current.reverse();
+      iconTL.current.reverse();
     } else {
       tl.current.play();
+      iconTL.current.play();
     }
     setIsOpen(!isOpen);
   };
@@ -67,12 +104,15 @@ const Navbar = () => {
           {["home", "services", "about", "work", "contact"].map(
             (section, index) => (
               <div key={index} ref={(el) => (linksRef.current[index] = el)}>
-                <a
-                  href=""
+                <Link
+                  to={`${section}`}
+                  smooth
+                  offset={0}
+                  duration={2000}
                   className="transition-all duration-300 cursor-pointer hover:text-white"
                 >
                   {section}
-                </a>
+                </Link>
               </div>
             ),
           )}
@@ -109,6 +149,11 @@ const Navbar = () => {
       </nav>
       <div
         onClick={toggleMenu}
+        style={
+          showBurger
+            ? { clipPath: "circle(50% at 50% 50%)" }
+            : { clipPath: "circle(0% at 50% 50%)" }
+        }
         className="fixed z-50 flex flex-col items-center justify-center gap-1 transition-all duration-300 bg-black rounded-full cursor-pointer w-14 h-14 md:w-20 md:h-20 top-4 right-10"
       >
         <span
