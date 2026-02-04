@@ -4,10 +4,10 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
 export function Planet(props) {
-  const { nodes, materials } = useGLTF("/models/Planet.glb");
   const shapeContainer = useRef(null);
   const shperesContainer = useRef(null);
   const ringContainer = useRef(null);
+  const { nodes, materials } = useGLTF("models/Planet.glb");
 
   useGSAP(() => {
     const tl = gsap.timeline();
