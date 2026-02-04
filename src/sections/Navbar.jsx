@@ -75,6 +75,11 @@ const Navbar = () => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      // Always show the burger when menu is open
+      if (isOpen) {
+        setShowBurger(true);
+        return;
+      }
       setShowBurger(currentScrollY <= lastScrollY || currentScrollY < 10);
       lastScrollY = currentScrollY;
     };
@@ -82,7 +87,23 @@ const Navbar = () => {
       passive: true,
     });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isOpen]);
+
+  // Lock page scroll when the menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+    };
+  }, [isOpen]);
 
   const toggleMenu = () => {
     if (isOpen) {
@@ -92,13 +113,14 @@ const Navbar = () => {
       tl.current.play();
       iconTL.current.play();
     }
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
+    setShowBurger(true);
   };
   return (
     <>
       <nav
         ref={navRef}
-        className="fixed z-50 flex flex-col justify-between w-full h-full px-10 uppercase bg-black text-white/80 py-28 gap-y-10 md:w-1/2 md:left-1/2"
+        className="fixed z-50 flex flex-col justify-between w-full h-full px-10 uppercase bg-black/40 backdrop-blur-md border border-white/10 text-white/80 py-28 gap-y-10 md:w-1/2 md:left-1/2 md:bg-black md:backdrop-blur-none md:border-none"
       >
         <div className="flex flex-col text-5xl gap-y-2 md:text-6xl lg:text-8xl">
           {["home", "services", "about", "work", "contact"].map(
@@ -154,7 +176,7 @@ const Navbar = () => {
             ? { clipPath: "circle(50% at 50% 50%)" }
             : { clipPath: "circle(0% at 50% 50%)" }
         }
-        className="fixed z-50 flex flex-col items-center justify-center gap-1 transition-all duration-300 bg-black rounded-full cursor-pointer w-14 h-14 md:w-20 md:h-20 top-4 right-10"
+        className="fixed z-50 flex flex-col items-center justify-center gap-1 transition-all duration-300 bg-black rounded-full cursor-pointer w-14 h-14 md:w-20 md:h-20 top-4 right-4 sm:right-10"
       >
         <span
           ref={topLineRef}

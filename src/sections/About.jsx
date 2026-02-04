@@ -51,12 +51,12 @@ const About = () => {
           textColor={"text-white"}
           withScrollTrigger={true}
         />
-        <div className="flex flex-col items-center justify-between gap-16 px-10 pb-16 text-xl font-light tracking-wide lg:flex-row md:text-2xl lg:text-3xl text-white/60">
+        <div className="flex flex-col items-center justify-between gap-16 px-10 pb-16 text-xl font-light tracking-wide md:flex-row md:items-start md:text-2xl lg:text-3xl text-white/60">
           <img
             ref={imgRef}
             src="images/man1.jpg"
             alt="man"
-            className="w-md rounded-3xl"
+            className="w-full max-w-md rounded-3xl"
           />
           <AnimatedTextLines text={aboutText} className={"w-full"} />
         </div>

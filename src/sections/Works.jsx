@@ -129,7 +129,7 @@ const Works = () => {
             />
 
             {/* title */}
-            <div className="flex justify-between px-10 text-black transition-all duration-500 md:group-hover:px-12 md:group-hover:text-white">
+            <div className="flex items-center justify-between px-10 text-black transition-all duration-500 gap-4 md:group-hover:px-12 md:group-hover:text-white">
               <h2 className="lg:text-[32px] text-[26px] leading-none">
                 {project.name}
               </h2>
@@ -149,7 +149,7 @@ const Works = () => {
               ))}
             </div>
             {/* mobile preview image */}
-            <div className="relative flex items-center justify-center px-10 md:hidden h-100">
+            <div className="relative flex items-center justify-center px-10 md:hidden h-80 sm:h-96">
               <img
                 src={project.bgImage}
                 alt={`${project.name}-bg-image`}
@@ -166,7 +166,7 @@ const Works = () => {
         {/* desktop Flaoting preview image */}
         <div
           ref={previewRef}
-          className="fixed -top-2/6 left-0 z-50 overflow-hidden border-8 border-black pointer-events-none w-240 md:block hidden opacity-0"
+          className="fixed -top-1/4 left-0 z-50 hidden md:block w-72 lg:w-96 overflow-hidden border-8 border-black pointer-events-none opacity-0"
         >
           {currentIndex !== null && (
             <img
