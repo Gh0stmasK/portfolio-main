@@ -29,8 +29,8 @@ const Hero = () => {
             camera={{ position: [0, 0, -10], fov: 17.5, near: 1, far: 20 }}
           >
             <ambientLight intensity={0.5} />
-            <Float speed={0.5}>
-              <Planet scale={isMobile ? 0.7 : 1} />
+            <Float speed={isMobile ? 0.3 : 0.5}>
+              <Planet scale={isMobile ? 0.4 : 1} />
             </Float>
             <Environment resolution={isMobile ? 64 : 256}>
               <group rotation={[-Math.PI / 3, 4, 1]}>
