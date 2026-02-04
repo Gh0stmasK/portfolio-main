@@ -24,14 +24,15 @@ const Hero = () => {
           style={{ width: "100vw", height: "100vh" }}
         >
           <Canvas
-            shadows
+            shadows={!isMobile}
+            dpr={isMobile ? [1, 1.25] : [1, 2]}
             camera={{ position: [0, 0, -10], fov: 17.5, near: 1, far: 20 }}
           >
             <ambientLight intensity={0.5} />
             <Float speed={0.5}>
               <Planet scale={isMobile ? 0.7 : 1} />
             </Float>
-            <Environment resolution={256}>
+            <Environment resolution={isMobile ? 64 : 256}>
               <group rotation={[-Math.PI / 3, 4, 1]}>
                 <Lightformer
                   form={"circle"}
